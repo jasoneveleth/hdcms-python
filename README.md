@@ -3,7 +3,7 @@
 How to use
 
 ```python
-import pyhdcms_helper
+import pyhdcms
 
-pyhdcms_helper.regex2stats1d(r"CM1_11_\d+.txt", dir="~/src/hdcms/data/")
+pyhdcms.regex2stats1d(r"CM1_11_\d+.txt", dir="~/src/hdcms/data/")
 ```
