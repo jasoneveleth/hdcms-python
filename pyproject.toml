@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyhdcms-examples"
+version = "0.0.1"
+description = "This package creates useful helper functions for python API"
+authors = [
+    {name="Jason Eveleth", email="pyhdcms-examples@jasoneveleth.com"},
+    {name="Arun Moorthy"},
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file="LICENSE.txt" }
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
