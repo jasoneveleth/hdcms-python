@@ -3,8 +3,8 @@ requires = ["hatchling", "hdcms", "opencv-python", "numpy"]
 build-backend = "hatchling.build"
 
 [project]
-name = "hdcms-helper"
-version = "0.0.5"
+name = "pyhdcms"
+version = "0.0.6"
 description = "This package creates useful helper functions for python API"
 authors = [
     {name="Jason Eveleth", email="pyhdcms-helper@jasoneveleth.com"},
