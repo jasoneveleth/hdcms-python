@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pyhdcms-helper"
+name = "pyhdcms_helper"
 version = "0.0.1"
 description = "This package creates useful helper functions for python API"
 authors = [
