@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hdcms-helper"
-version = "0.0.9"
+version = "0.1.0"
 description = "This package creates useful helper functions for python API"
 authors = [
-    {name="Jason Eveleth", email="pyhdcms-helper@jasoneveleth.com"},
+    {name="Jason Eveleth", email="hdcms-helper@jasoneveleth.com"},
     {name="Arun Moorthy"},
 ]
 readme = "README.md"
@@ -16,5 +16,5 @@ dependencies = ["hdcms", "opencv-python", "numpy"]
 license = { file="LICENSE.txt" }
 
 [project.urls]
-"Homepage" = "https://github.com/pypa/sampleproject"
-"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+"Homepage" = "https://github.com/jasoneveleth/pyhdcms-helper"
+"Bug Tracker" = "https://github.com/jasoneveleth/pyhdcms-helper/issues"
