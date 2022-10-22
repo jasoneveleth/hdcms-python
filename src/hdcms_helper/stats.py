@@ -88,12 +88,12 @@ def compare(*args, npeaks=None):
 
     if len(args) == 2:
         if is_using_2d:
-            hdcms.compare_compound_2d(args[0], args[1])
+            return hdcms.compare_compound_2d(args[0], args[1])
         else:
-            hdcms.compare_compound_1d(args[0], args[1])
+            return hdcms.compare_compound_1d(args[0], args[1])
     else:
         if is_using_2d:
-            hdcms.compare_all_2d(args)
+            return hdcms.compare_all_2d(args)
         else:
-            hdcms.compare_all_1d(args)
+            return hdcms.compare_all_1d(args)
 
