@@ -3,8 +3,21 @@ import re
 import os
 import sys
 import numpy as np
-from hdcms import filenames_to_stats_1d as filenames2stats1d
-from hdcms import filenames_to_stats_2d as filenames2stats2d
+
+def file_ok(fname):
+    if not (os.path.isfile(fname) and os.access(fname, os.R_OK)):
+        raise RuntimeError(f"File {fname} doesn't exist or isn't readable")
+
+def filenames2stats1d(filenames):
+    for f in filenames.split(","):
+        file_ok(f)
+    return hdcms.filenames_to_stats_1d(filenames)
+
+def filenames2stats2d(filenames):
+    for f in filenames.split(","):
+        if not (os.path.isfile(f) and os.access(f, os.R_OK)):
+            raise RuntimeError(f"File {f} doesn't exist or isn't readable")
+    return hdcms.filenames_to_stats_2d(filenames)
 
 def regex2filenames(regex, dir="."):
     files = [f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))]
@@ -21,11 +34,11 @@ def regex2filenames(regex, dir="."):
 
 def regex2stats1d(regex, dir="."):
     filenames = regex2filenames(regex, dir)
-    return hdcms.filenames_to_stats_1d(filenames)
+    return filenames2stats1d(filenames)
 
 def regex2stats2d(regex, dir="."):
     filenames = regex2filenames(regex, dir)
-    return hdcms.filenames_to_stats_2d(filenames)
+    return filenames2stats2d(filenames)
 
 # example: regex2stats1d(r"CM1_2_\d.txt", dir="../data")
 
@@ -34,10 +47,10 @@ def file2filenames(filename):
         return ",".join(f.readlines())
 
 def file2stats1d(filename):
-    return hdcms.filenames_to_stats_1d(file2filenames(filename))
+    return filenames2stats1d(file2filenames(filename))
 
 def file2stats2d(filename):
-    return hdcms.filenames_to_stats_2d(file2filenames(filename))
+    return filenames2stats2d(file2filenames(filename))
 
 # example: file2stats2d("./compound1_high_res.txt")
 
@@ -55,7 +68,7 @@ def array2stats1d(*args):
         filename = os.path.join(dir, f"{i}-numpy-array.txt")
         np.savetxt(filename, arr)
         lst.append(filename)
-    return hdcms.filenames_to_stats_1d(",".join(lst))
+    return filenames2stats1d(",".join(lst))
 
 def array2stats2d(*args):
     dir = get_unique_tmpdir()
@@ -64,7 +77,7 @@ def array2stats2d(*args):
         filename = os.path.join(dir, f"{i}-numpy-array.txt")
         np.savetxt(filename, arr)
         lst.append(filename)
-    return hdcms.filenames_to_stats_2d(",".join(lst))
+    return filenames2stats2d(",".join(lst))
 
 # figures out the comparison function needed and checks that the input is valid size
 def compare(*args, npeaks=None):
