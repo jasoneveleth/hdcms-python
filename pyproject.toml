@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hdcms-helper"
-version = "0.1.2"
+version = "0.1.4"
 description = "This package creates useful helper functions for python API"
 authors = [
     {name="Jason Eveleth", email="hdcms-helper@jasoneveleth.com"},
