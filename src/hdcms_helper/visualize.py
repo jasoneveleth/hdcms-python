@@ -89,8 +89,10 @@ def write_image(data, filename):
     if len(data[0]) == 4:
         data[:,2] = data[:,2] * STD_SCALE + FAKE_NOISE
         data[:,3] = data[:,3] * STD_SCALE + FAKE_NOISE
-    else:
+    elif len(data[0]) == 2:
         data[:,1] = data[:,1] * STD_SCALE + FAKE_NOISE
+    else:
+        raise RuntimeError(f"Incorrect dimension: recieved {data.shape} must be nx2 or nx4")
 
     if len(data[0]) == 4:
         # min_x, min_y, max_x, max_y
