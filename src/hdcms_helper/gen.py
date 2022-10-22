@@ -27,34 +27,38 @@ def smear(data):
     data[:,1] += add
     return data
 
-def generate_examples():
+def generate_examples(visualize=True):
     for i in range(10):
         with open(f"gaus_{i}.txt", "w") as f:
             d = data(scipy.stats.norm)
             for pt in d:
                 print(pt[0], pt[1], file=f)
-            plot(d, "gaussian")
+            if visualize:
+                plot(d, "gaussian")
 
     for i in range(10):
         with open(f"laplace_{i}.txt", "w") as f:
             d = data(scipy.stats.laplace)
             for pt in d:
                 print(pt[0], pt[1], file=f)
-            plot(d, "laplace")
+            if visualize:
+                plot(d, "laplace")
 
     for i in range(10):
         with open(f"cauchy_{i}.txt", "w") as f:
             d = data(scipy.stats.cauchy)
             for pt in d:
                 print(pt[0], pt[1], file=f)
-            plot(d, "cauchy")
+            if visualize:
+                plot(d, "cauchy")
 
     for i in range(3):
         with open(f"unknown_{i}.txt", "w") as f:
             d = data(scipy.stats.laplace)
             for pt in d:
                 print(pt[0], pt[1], file=f)
-            plot(d, "unknown (laplace)")
+            if visualize:
+                plot(d, "unknown (laplace)")
 
     with open("params.txt", "w") as f:
         print("Parameters when we last ran `gen.py`:", file=f)
