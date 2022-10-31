@@ -24,7 +24,7 @@ You can see a complete list of functions (and where they are located) by running
 import hdcms_helper as hdc
 help(hdc)
 with open(<filename>, 'r') as f:
-    print(file.read())
+    print(f.read())
 
 help(hdc.regex2stats1d)
 ```
