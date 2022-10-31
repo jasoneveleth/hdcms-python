@@ -12,7 +12,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.7"
-dependencies = ["hdcms", "opencv-python", "numpy"]
+dependencies = ["hdcms", "opencv-python", "numpy", "matplotlib", "scipy"]
 license = { file="LICENSE.txt" }
 
 [project.urls]
