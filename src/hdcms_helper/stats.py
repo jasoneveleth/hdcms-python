@@ -85,14 +85,10 @@ def array2stats2d(*args):
 # figures out the comparison function needed and checks that the input is valid size
 def compare(*args, npeaks=None):
     is_using_2d = (npeaks != None)
-    if len(args) == 1:
+    if len(args) <= 1:
         raise RuntimeError("Must compare at least 2 summary statistics")
 
-    # verify they all have the same length of second dimension
     len_of_dim_2 = args[0].shape[1]
-    for arr in args:
-        if arr.shape[1] != len_of_dim_2:
-            raise RuntimeError(f"Mismatch dimension: recieved {arr.shape} and {args[0].shape}, they must be the same and either (_, 2) or (_, 4)")
 
     # make sure it is either 2 or 4
     if len_of_dim_2 not in [2,4]:
@@ -101,6 +97,13 @@ def compare(*args, npeaks=None):
     # make sure they are using the right number of peaks
     if len_of_dim_2 == 2 and is_using_2d:
         raise RuntimeError("Mismatch dimension: supplied npeaks={npeaks} but using an array with dimensions {args[0].shape}. To use 2d comparison must be (_, 4)")
+    elif len_of_dim_2 == 4:
+        is_using_2d = True
+
+    # verify they all have the same length of second dimension
+    for arr in args:
+        if arr.shape[1] != len_of_dim_2:
+            raise RuntimeError(f"Mismatch dimension: recieved {arr.shape} and {args[0].shape}, they must be the same and either (_, 2) or (_, 4)")
 
     if len(args) == 2:
         if is_using_2d:
