@@ -9,10 +9,11 @@ GRN = "\x1b[32m"
 VLT = "\x1b[35m"
 
 def compute_changes(lines: List[str]) -> Tuple[List[str], List[str]]:
+    """figure out which lines to delete and return the acceptable lines, and the changes"""
     changes = []
     new_lines = []
 
-    # header
+    # we include a header of lines starting with '#' (essentially like comments above the data)
     content_start = 0
     for line in lines:
         if line[0] != '#':
@@ -20,7 +21,7 @@ def compute_changes(lines: List[str]) -> Tuple[List[str], List[str]]:
         new_lines.append(line)
         content_start += 1
 
-    # deletes lines that aren't numbers, deletes leading whitespace
+    # deletes lines that aren't numbers, deletes leading + trailing whitespace
     for i, line in enumerate(lines[content_start:], start=content_start):
         line = line.rstrip()
         stripped = line.lstrip()
@@ -37,6 +38,7 @@ def compute_changes(lines: List[str]) -> Tuple[List[str], List[str]]:
     return new_lines, changes
 
 def backup_file(src: str, dryrun=False, verbose=False):
+    """this creates a backup file for file `src`"""
     # deal with ppl trying to escape tmp dir
     dest = os.path.join(get_tmpdir(), src.replace("..", "_"))
 
@@ -60,6 +62,7 @@ def backup_file(src: str, dryrun=False, verbose=False):
         shutil.copy(src, dest)
 
 def parse_args(dryrun=False, verbose=False):
+    """parse out the arguments from commandline"""
     if sys.argv[1][0] == '-':
         if sys.argv[1] == '--dry-run':
             sys.argv.pop(1)
@@ -77,6 +80,7 @@ def parse_args(dryrun=False, verbose=False):
         return dryrun, verbose
 
 def clean(dryrun=False, verbose=False):
+    """this function coordinates most of the work, makes backups, reads file and maches changes"""
     for path in sys.argv[1:]:
         backup_file(path, dryrun=dryrun, verbose=verbose)
 
@@ -95,11 +99,14 @@ def clean(dryrun=False, verbose=False):
     print(f"backups are in {get_tmpdir()}[/path/to/file]")
 
 def get_tmpdir(dir="hdcms_backup"):
+    """returns the name of a tmp directory"""
     return f"/tmp/{dir}" if sys.platform != "win32" else f"C:\\Users\\AppData\\Local\\Temp\\{dir}"
 
 def main():
+    """main"""
     dryrun, verbose = parse_args()
     clean(dryrun=dryrun, verbose=verbose)
 
+# this ensures we only run it if we are running this file from the commandline, rather than importing it
 if __name__ == "__main__":
     main()

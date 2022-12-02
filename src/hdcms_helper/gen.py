@@ -7,13 +7,14 @@ ADD_RADIUS = 0.001
 MEAN = 200
 N = 100
 
-# create data
 def data(dist):
+    """create data"""
     sample = dist.rvs(size=(N, 2), loc=MEAN) # we get garbage for y values
     sample[:,1] = dist.pdf(sample[:,0], loc=MEAN)
     return smear(sample)
 
 def plot(data, title="no title provided"):
+    """plot data on a graph"""
     plt.scatter(data[:,0], data[:,1])
     plt.title(title)
     plt.xlim(190, 210)
@@ -21,13 +22,15 @@ def plot(data, title="no title provided"):
     plt.show()
 
 def smear(data):
+    """add noise to data"""
     scale = 1 + np.random.random() * SCALE_RADIUS - SCALE_RADIUS
     add = np.random.random() * ADD_RADIUS - ADD_RADIUS
     data[:,1] *= scale
     data[:,1] += add
     return data
 
-def generate_examples(visualize=True):
+def generate_examples(visualize=False):
+    """use scipy statistics distributions to generate synthetic data"""
     for i in range(10):
         with open(f"gaus_{i}.txt", "w") as f:
             d = data(scipy.stats.norm)

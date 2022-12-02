@@ -158,6 +158,10 @@ def dress_image(img, bounds):
     cv2.putText(img, str(int(max_y*100) / 100), (int(tick_x - 5 * tick_len), int(tick_y)), fontFace=font, fontScale=1, color=(0,0,0))
     return img
 
+def points2img(fname):
+    with open(fname) as f:
+        for a in f:
+            print(a)
 
 # example
 # filename = "low_res.png" if len(sys.argv) < 2 else sys.argv[1]

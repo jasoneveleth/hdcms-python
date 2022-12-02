@@ -5,21 +5,25 @@ import sys
 import numpy as np
 
 def file_ok(fname):
+    """ensure that fname is a file"""
     if not (os.path.isfile(fname) and os.access(fname, os.R_OK)):
         raise RuntimeError(f"File {fname} doesn't exist or isn't readable")
 
 def filenames2stats1d(filenames):
+    """take filenames and convert them into a 1d summary statistic"""
     for f in filenames.split(","):
         file_ok(f)
     return hdcms.filenames_to_stats_1d(filenames)
 
 def filenames2stats2d(filenames):
+    """take filenames and convert them into a 2d summary statistic"""
     for f in filenames.split(","):
         if not (os.path.isfile(f) and os.access(f, os.R_OK)):
             raise RuntimeError(f"File {f} doesn't exist or isn't readable")
     return hdcms.filenames_to_stats_2d(filenames)
 
 def regex2filenames(regex, dir="."):
+    """takes regex, finds all files that match and convert them into list of filenames"""
     files = [f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))]
 
     r = re.compile(regex)
@@ -36,28 +40,32 @@ def regex2filenames(regex, dir="."):
     return ','.join(full_paths)
 
 def regex2stats1d(regex, dir="."):
+    """takes regex, converts list of filenames that match into 1d summary stat"""
     filenames = regex2filenames(regex, dir)
     return filenames2stats1d(filenames)
 
 def regex2stats2d(regex, dir="."):
+    """takes regex, converts list of filenames that match into 2d summary stat
+       example: regex2stats1d(r"CM1_2_\d.txt", dir="../data")"""
     filenames = regex2filenames(regex, dir)
     return filenames2stats2d(filenames)
 
-# example: regex2stats1d(r"CM1_2_\d.txt", dir="../data")
-
 def file2filenames(filename):
+    """takes file with filenames on separate lines and joins them into a string of filenames separated by commas"""
     with open(filename) as f:
         return ",".join(f.readlines())
 
 def file2stats1d(filename):
+    """takes file with filenames on separate lines converts them into a 1d summary statistic"""
     return filenames2stats1d(file2filenames(filename))
 
 def file2stats2d(filename):
+    """takes file with filenames on separate lines converts them into a 2d summary statistic
+       example: file2stats2d("./compound1_high_res.txt")"""
     return filenames2stats2d(file2filenames(filename))
 
-# example: file2stats2d("./compound1_high_res.txt")
-
 def get_unique_tmpdir(name="hdcms-numpy-tmp"):
+    """creates a unique temporary directory, in unix it's /tmp, on windows its C:\Users\AppData\Local\Temp"""
     dir = f"/tmp" if sys.platform != "win32" else f"C:\\Users\\AppData\\Local\\Temp"
     _, existing_dirs, _ = next(os.walk(dir))
     while name in existing_dirs:
@@ -65,6 +73,7 @@ def get_unique_tmpdir(name="hdcms-numpy-tmp"):
     return os.path.join(dir, name)
 
 def array2stats1d(*args):
+    """takes a varargs list of numpy arrays and converts them into 1d summary statistic"""
     dir = get_unique_tmpdir()
     lst = []
     for i, arr in args:
@@ -74,6 +83,7 @@ def array2stats1d(*args):
     return filenames2stats1d(",".join(lst))
 
 def array2stats2d(*args):
+    """takes a varargs list of numpy arrays and converts them into 2d summary statistic"""
     dir = get_unique_tmpdir()
     lst = []
     for i, arr in args:
@@ -84,6 +94,9 @@ def array2stats2d(*args):
 
 # figures out the comparison function needed and checks that the input is valid size
 def compare(*args, npeaks=None):
+    """takes varargs list of summary statistic and computes the similarity according to its arguments,
+       so if all arrays are 1d summary stats it will compare them using 1d similarity, same with 2d, if
+       anything doesn't match it will raise a helpful error message"""
     is_using_2d = (npeaks != None)
     if len(args) <= 1:
         raise RuntimeError("Must compare at least 2 summary statistics")
