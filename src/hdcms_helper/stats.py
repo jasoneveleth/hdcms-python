@@ -46,7 +46,7 @@ def regex2stats1d(regex, dir="."):
 
 def regex2stats2d(regex, dir="."):
     """takes regex, converts list of filenames that match into 2d summary stat
-       example: regex2stats1d(r"CM1_2_\d.txt", dir="../data")"""
+       example: regex2stats1d(r"CM1_2_\\d.txt", dir="../data")"""
     filenames = regex2filenames(regex, dir)
     return filenames2stats2d(filenames)
 
@@ -65,7 +65,7 @@ def file2stats2d(filename):
     return filenames2stats2d(file2filenames(filename))
 
 def get_unique_tmpdir(name="hdcms-numpy-tmp"):
-    """creates a unique temporary directory, in unix it's /tmp, on windows its C:\Users\AppData\Local\Temp"""
+    """creates a unique temporary directory, in unix it's /tmp, on windows its C:\\Users\\AppData\\Local\\Temp"""
     dir = f"/tmp" if sys.platform != "win32" else f"C:\\Users\\AppData\\Local\\Temp"
     _, existing_dirs, _ = next(os.walk(dir))
     while name in existing_dirs:
