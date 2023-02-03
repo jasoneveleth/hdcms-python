@@ -12,9 +12,9 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.7"
-dependencies = ["hdcms", "opencv-python", "numpy", "matplotlib", "scipy"]
+dependencies = ["hdcms-bindings", "opencv-python", "numpy", "matplotlib", "scipy"]
 license = { file="LICENSE.txt" }
 
 [project.urls]
-"Homepage" = "https://github.com/jasoneveleth/pyhdcms-helper"
-"Bug Tracker" = "https://github.com/jasoneveleth/pyhdcms-helper/issues"
+"Homepage" = "https://github.com/jasoneveleth/hdcms-python"
+"Bug Tracker" = "https://github.com/jasoneveleth/hdcms-python/issues"
