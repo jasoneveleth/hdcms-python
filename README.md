@@ -45,5 +45,6 @@ filter function for 2d spectra to filter out peaks with large x variation
 
 ## Change Log
 
+0.1.10 Really rename
 0.1.9 Rename, performance for visulize in 1D case
 0.1.8 Add documentation
