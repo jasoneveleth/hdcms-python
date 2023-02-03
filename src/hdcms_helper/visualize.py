@@ -37,23 +37,22 @@ def gaussian_2d(width, height, h, k, a, b):
         return weights
 
 def gaussian_1d(width, height, h, k, ystd, xwidth):
-    # Generate (x,y) coordinate arrays
-    y,_ = np.mgrid[-k:height-k,-h:width-h] 
-    # returns an array [[[-k, -k+1, ..., height-k-1, height-k], ...], 
-    #                   [[-k, ..., -k], ..., [height-k, ..., height-k]]]
-
-    weights = np.exp((-1/2) * ((y / ystd)**2))
-
-    mask = np.zeros((height, width))
     lowest_x_rendered = int(h - (xwidth/2))
     highest_x_rendered = int(h + (xwidth/2))
-    mask[:, lowest_x_rendered:highest_x_rendered] = 1
+    y,_ = np.mgrid[-k:height-k, lowest_x_rendered:highest_x_rendered]
+    # so sets y to [[-k, -k, -k, ..., -k, -k],
+    #               [-(k-1), -(k-1), -(k-1), ..., -(k-1)],
+    #               ...
+    #               [(height-k-1), (height-k-1), ..., (height-k-1)]]
+    # with the number of columns equal to (highest_x_rendered - lowest_x_rendered)
+    weights = np.exp((-1/2) * ((y / ystd)**2))
 
-    weights *= mask
-    if np.max(weights):
-        return weights / np.max(weights)
+    ret = np.zeros((height, width))
+    ret[:, lowest_x_rendered:highest_x_rendered] = weights
+    if weights.size != 0 and np.max(weights) != 0:
+        return ret / np.max(weights)
     else:
-        return weights
+        return ret
 
 # overall goal: helper function when trying to convert (x,y) to pixel values of an image of size xpixels x ypixels with a border (of size XBORDER and YBORDER)
 # coords are x from 0 to ~150, y from 0 to 1.0
@@ -111,7 +110,7 @@ def write_image(data, filename):
             h, k = coords2pix(peak[0], peak[1], bounds)
             img += gaussian_2d(xpixels, ypixels, h, k, a, b)
         else:
-            if np.sum(peak) != 0.:
+            if np.sum(peak[0]) != 0.:
                 width, sd = scaling2pix(WIDTH, peak[1], bounds) # width and standard deviations
                 h, k = coords2pix(i * WIDTH, peak[0], bounds)
                 img += gaussian_1d(xpixels, ypixels, h, k, sd, width)
