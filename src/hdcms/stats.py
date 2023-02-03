@@ -1,4 +1,4 @@
-import hdcms
+import hdcms_bindings
 import re
 import os
 import sys
@@ -13,14 +13,14 @@ def filenames2stats1d(filenames):
     """take filenames and convert them into a 1d summary statistic"""
     for f in filenames.split(","):
         file_ok(f)
-    return hdcms.filenames_to_stats_1d(filenames)
+    return hdcms_bindings.filenames_to_stats_1d(filenames)
 
 def filenames2stats2d(filenames):
     """take filenames and convert them into a 2d summary statistic"""
     for f in filenames.split(","):
         if not (os.path.isfile(f) and os.access(f, os.R_OK)):
             raise RuntimeError(f"File {f} doesn't exist or isn't readable")
-    return hdcms.filenames_to_stats_2d(filenames)
+    return hdcms_bindings.filenames_to_stats_2d(filenames)
 
 def regex2filenames(regex, dir="."):
     """takes regex, finds all files that match and convert them into list of filenames"""
@@ -120,12 +120,12 @@ def compare(*args, npeaks=None):
 
     if len(args) == 2:
         if is_using_2d:
-            return hdcms.compare_compound_2d(args[0], args[1])
+            return hdcms_bindings.compare_compound_2d(args[0], args[1])
         else:
-            return hdcms.compare_compound_1d(args[0], args[1])
+            return hdcms_bindings.compare_compound_1d(args[0], args[1])
     else:
         if is_using_2d:
-            return hdcms.compare_all_2d(args)
+            return hdcms_bindings.compare_all_2d(args)
         else:
-            return hdcms.compare_all_1d(args)
+            return hdcms_bindings.compare_all_1d(args)
 

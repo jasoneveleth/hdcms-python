@@ -1,4 +1,4 @@
-# hdcms-helper
+# hdcms
 
 This library is available on pypi [here](https://pypi.org/project/hdcms/). Install using `pip install hdcms`.
 
@@ -45,6 +45,7 @@ filter function for 2d spectra to filter out peaks with large x variation
 
 ## Change Log
 
-0.1.10 Really rename
-0.1.9 Rename, performance for visulize in 1D case
+0.1.11 Fix problems introduced by rename
+0.1.10 Really rename (broken)
+0.1.9 Rename, performance for visulize in 1D case (broken)
 0.1.8 Add documentation
