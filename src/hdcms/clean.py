@@ -79,9 +79,9 @@ def parse_args(dryrun=False, verbose=False):
     else:
         return dryrun, verbose
 
-def clean(dryrun=False, verbose=False):
+def clean(files, dryrun=False, verbose=False):
     """this function coordinates most of the work, makes backups, reads file and maches changes"""
-    for path in sys.argv[1:]:
+    for path in files:
         backup_file(path, dryrun=dryrun, verbose=verbose)
 
         with open(path) as f:
@@ -105,7 +105,7 @@ def get_tmpdir(dir="hdcms_backup"):
 def main():
     """main"""
     dryrun, verbose = parse_args()
-    clean(dryrun=dryrun, verbose=verbose)
+    clean(sys.argv[1:], dryrun=dryrun, verbose=verbose)
 
 # this ensures we only run it if we are running this file from the commandline, rather than importing it
 if __name__ == "__main__":
