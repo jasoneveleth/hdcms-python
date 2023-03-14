@@ -1,12 +1,14 @@
-# Visualizations
+# Examples
 
-https://github.com/jasoneveleth/hdcms-python/tree/main/paper_visualization.ipynb contains miscellaneous visualization from the paper.
+## paper_visualization.ipynb
 
-## Data
+contains miscellaneous visualization from the paper.
+
+### Data
 
 `data/ex{i}.txt` - synthetic data for basic visualization
 
-# Example 1
+## paper_example_1.ipynb
 
 Source: https://data.nist.gov/od/id/mds2-2418
 Note: we used the following bash script to preprocess the data in CM1, CM2, CM3, and Isomers.
@@ -19,8 +21,12 @@ done
 
 Here is the notebook which explains example 1: `paper_example1.ipynb`.
 
-## Data
+### Data
 
+<details>
+<summary>
+Names and formulas for all compounds in `data/`
+</summary>
 ```
 CM1,01,Acetyl norfentanyl,C13H18N2O,
 CM1,02,Remifentanil,C20H28N2O5,
@@ -167,3 +173,8 @@ Isomers,13,Methamphetamine,C10H15N,
 Isomers,14,delta-9-THC,C21H30O2,
 Isomers,15,o-FBF,C23H29FN2O,
 ```
+</details>
+
+## paper_example_2.ipynb
+
+TODO: describe this
