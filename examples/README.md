@@ -1,5 +1,9 @@
 # Examples
 
+## start_here.ipynb
+
+describes workflow + data format
+
 ## paper_visualization.ipynb
 
 contains miscellaneous visualization from the paper.
