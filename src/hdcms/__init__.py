@@ -4,5 +4,4 @@ from .stats import file2stats1d, file2stats2d
 from .stats import filenames2stats1d, filenames2stats2d
 from .stats import compare
 from .visualize import write_image
-from .clean import clean
 from .gen import generate_examples
