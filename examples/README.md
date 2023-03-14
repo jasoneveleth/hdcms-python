@@ -27,7 +27,7 @@ Here is the notebook which explains example 1: `paper_example1.ipynb`.
 <summary>
 Names and formulas for all compounds in `data/`
 </summary>
-```
+<code>
 CM1,01,Acetyl norfentanyl,C13H18N2O,
 CM1,02,Remifentanil,C20H28N2O5,
 CM1,03,Acrylfentanyl,C22H26N2O,
@@ -172,7 +172,7 @@ Isomers,12,LSD,C20H25N3O,
 Isomers,13,Methamphetamine,C10H15N,
 Isomers,14,delta-9-THC,C21H30O2,
 Isomers,15,o-FBF,C23H29FN2O,
-```
+</code>
 </details>
 
 ## paper_example_2.ipynb
