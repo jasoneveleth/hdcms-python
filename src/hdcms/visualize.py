@@ -5,7 +5,8 @@ import numpy as np
 import sys
 
 class ImageConfig:
-    # designed to be called by write(), so it's very coupled
+    """this class is used to keep track of all the parameters of the image
+    """
     def __init__(self, size=(3600, 1200), std_scale=1, desingularization=1e-5, axis_thickness=3):
         self.xpixels, self.ypixels = size
 
@@ -18,6 +19,8 @@ class ImageConfig:
         self.axis_thickness = axis_thickness
 
 class StatsContext:
+    """this class is used by 1d code to keep track of the bin parameters
+    """
     def __init__(self, start=0, stop=899.9, num_bins=9000):
         self.start = start
         self.stop = stop
@@ -25,6 +28,13 @@ class StatsContext:
         self.bin_width = (stop - start) / (num_bins - 1)
 
 def gaussian_2d(width, height, h, k, a, b):
+    """ goal: output an array of pixels with 2d gaussian drawn on
+    recall: a 2d gaussian is a mean and standard deviation of a peak
+
+    width and height are from the image config [refactor: pass the config itself and use field access]
+    (h,k) are the center of the gaussian
+    (a, b) are the standard deviations of the gaussian
+    """
     # Generate (x,y) coordinate arrays
     y,x = np.mgrid[-k:height-k,-h:width-h] 
     # returns an array [[[-k, -k+1, ..., height-k-1, height-k], ...], 
@@ -37,6 +47,14 @@ def gaussian_2d(width, height, h, k, a, b):
         return weights
 
 def gaussian_1d(h, k, ystd, xwidth, config):
+    """ goal: output an array of pixels with 1d gaussian drawn on
+    recall: a 1d gaussian is a mean and standard deviation of a bin
+
+    (h,k) are the center of the gaussian
+    ystd is the standard deviation of the gaussian
+    xwidth is how wide the bin is
+    config is the image config (size, etc)
+    """
     # don't want to go off screen
     lowest_x_rendered = max(int(h - (xwidth/2)), 0)
     highest_x_rendered = min(int(h + (xwidth/2)), config.xpixels)
@@ -58,9 +76,10 @@ def gaussian_1d(h, k, ystd, xwidth, config):
     else:
         return ret
 
-# overall goal: convert (x,y,width,height) from coordinates to pixel
-# note: we need to flip the y values
 def coordinate_rectangle_to_pixels(rect, axis_limits, config):
+    """ goal: convert (x,y,width,height) from coordinates to pixel
+    note: we need to flip the y values
+    """
     x, y, width, height = rect
     xmin, ymin, xmax, ymax = axis_limits
     xscale = config.xpixels / (xmax - xmin)
@@ -70,7 +89,7 @@ def coordinate_rectangle_to_pixels(rect, axis_limits, config):
     y = (y - ymin)*yscale # we don't add anything bc min pixel value is 0
     return (x, config.ypixels - y, width * xscale, height * yscale)
 
-def write_image(data, filename, config=ImageConfig(), context=StatsContext(), axis_limits=None):
+def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=None):
     data = np.array(data)
     if len(data[0]) == 4:
         data[:,2] = data[:,2] * config.std_scale + config.desingularization
@@ -109,12 +128,11 @@ def write_image(data, filename, config=ImageConfig(), context=StatsContext(), ax
                 h, k, width, sd = coordinate_rectangle_to_pixels((rect_center_x, peak[0], context.bin_width, peak[1]), axis_limits, config)
                 img += gaussian_1d(h, k, sd, width, config)
 
-    img = dress_image(img, axis_limits, config)
+    return dress_image(img, axis_limits, config)
 
-    cv2.imwrite(filename, img)
-
-# this function takes the straight output of the gaussians and adds axes, tickmarks, text
 def dress_image(img, axis_limits, config):
+    """this function takes the straight output of the gaussians and adds axes, tickmarks, text
+    """
     # invert -> most of image is ~1, and peaks are ~0
     img = np.clip(1 - img, 0, 1)
 
@@ -171,9 +189,4 @@ def dress_image(img, axis_limits, config):
     text = str(int(tick_y_value*100) / 100)
     cv2.putText(img, text, (int(tick_x - 5*tick_len), int(tick_y + 5*tick_len)), **label_config)
     return img
-
-def points2img(fname):
-    with open(fname) as f:
-        for a in f:
-            print(a)
 
