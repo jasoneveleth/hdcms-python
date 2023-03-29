@@ -31,6 +31,7 @@ opencv is required for `write_image()`, which will visualize summary statistics.
 ## Change Log
 
 ```
+0.1.15 Return image from write_image, rather than writing to file
 0.1.14 Add new params to write_image
 0.1.13 Add new params to write_image
 0.1.12 Add params to write_image
