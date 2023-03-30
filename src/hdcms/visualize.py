@@ -106,7 +106,7 @@ def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=
 
         if len(data[0]) == 4:
             width = np.max(data[:, 0]) - np.min(data[:, 0])
-            height = np.max(data[:, 0]) - np.min(data[:, 0])
+            height = np.max(data[:, 1]) - np.min(data[:, 1])
         else:
             width = (np.max(np.nonzero(data[:, 0])) + 1) * context.bin_width
             height = np.max(data[:, 0])

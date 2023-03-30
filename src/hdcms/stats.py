@@ -31,7 +31,7 @@ def regex2filenames(regex, dir="."):
     for f in files:
         match = r.match(f)
         if match:
-            matches.append(match.group())
+            matches.append(f)
 
     if len(matches) == 0:
         raise RuntimeError(f"No matches for {regex} in directory {dir}")
