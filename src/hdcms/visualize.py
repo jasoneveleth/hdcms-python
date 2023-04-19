@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 class ImageConfig:
     """this class is used to keep track of all the parameters of the image
@@ -144,49 +145,21 @@ def dress_image(img, axis_limits, config):
     img = np.uint8(img * 255)
 
     xmin, ymin, xmax, ymax = axis_limits
-    # xaxis
-    if ymin <= 0 and 0 < ymax:
-        startx, starty, _, _ = coordinate_rectangle_to_pixels((xmin, 0, 0, 0), axis_limits, config)
-        endx, endy, _, _ = coordinate_rectangle_to_pixels((xmax, 0, 0, 0), axis_limits, config)
-        cv2.line(img, (int(startx), int(starty)), (int(endx), int(endy)), color=(0, 0, 0), thickness=config.axis_thickness)
-    # yaxis
-    if xmin <= 0 and 0 < xmax:
-        startx, starty, _, _ = coordinate_rectangle_to_pixels((0, ymin, 0, 0), axis_limits, config)
-        endx, endy, _, _ = coordinate_rectangle_to_pixels((0, ymax, 0, 0), axis_limits, config)
-        cv2.line(img, (int(startx), int(starty)), (int(endx), int(endy)), color=(0, 0, 0), thickness=config.axis_thickness)
+    xlen = img.shape[1]
+    ylen = img.shape[0]
+    old_figure_num = plt.gcf().number # figure to restore
+    figsize = plt.rcParams["figure.figsize"][0] # we take x value
+    APPROX_MARGIN_RATIO_OF_IMG = 0.3 # correct for the fact that plt tick marks and axes take up part of image
+    fig, ax = plt.subplots(dpi=(1/APPROX_MARGIN_RATIO_OF_IMG)*ylen/figsize)
+    ax.imshow(img, extent=(xmin, xmax, ymin, ymax))
+    ax.set_aspect(((xmax-xmin)/(ymax-ymin))/(xlen/ylen))
+    ax.set_title("hdc visual")
+    ax.set_xlabel("m/z values")
+    ax.set_ylabel("intensities")
 
-    # draw ticks and labels
-    thickness = max(int((config.xpixels+config.ypixels)/1200), 1)
-    label_config = {
-        'fontFace': cv2.FONT_HERSHEY_SIMPLEX,
-        'color': (0,0,0),
-        # 1 at 800x400, 4 at 3600x1200
-        'thickness': thickness,
-        # 1 at 800x400, 2 at 3600x1200
-        'fontScale': int(config.axis_thickness*(2/3)),
-    }
-    tick_config = {
-        'color': (0,0,0),
-        'thickness': thickness,
-    }
-    tick_len = config.axis_thickness * 5
-    tick_y_value = (ymax - ymin) / 1.2
-    tick_x_value = (xmax - xmin) / 1.2
+    fig.canvas.draw()
+    img = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
 
-    # x-axis tick mark
-    tick_x, tick_y, _, _ = coordinate_rectangle_to_pixels((tick_x_value, 0, 0, 0), axis_limits, config)
-    # tick
-    cv2.line(img, (int(tick_x), int(tick_y)), (int(tick_x), int(tick_y + tick_len)), **tick_config)
-    # label
-    text = str(int(tick_x_value*10) / 10)
-    cv2.putText(img, text, (int(tick_x - 12 * tick_len), int(tick_y + 3.5 * tick_len)), **label_config)
-
-    # y-axis tick mark
-    tick_x, tick_y, _, _ = coordinate_rectangle_to_pixels((0, tick_y_value, 0, 0), axis_limits, config)
-    # tick
-    cv2.line(img, (int(tick_x - tick_len), int(tick_y)), (int(tick_x), int(tick_y)), **tick_config)
-    # label
-    text = str(int(tick_y_value*100) / 100)
-    cv2.putText(img, text, (int(tick_x - 5*tick_len), int(tick_y + 5*tick_len)), **label_config)
+    # reactivate old figure
+    plt.figure(old_figure_num)
     return img
-
