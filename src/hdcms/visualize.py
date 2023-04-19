@@ -1,6 +1,5 @@
 # https://stackoverflow.com/questions/49829783/draw-a-gradual-change-ellipse-in-skimage
 
-import cv2
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
@@ -137,9 +136,9 @@ def dress_image(img, axis_limits, config):
     # invert -> most of image is ~1, and peaks are ~0
     img = np.clip(1 - img, 0, 1)
 
-    # convert to B, G, R image rather than just single channel black and white
+    # convert to R, G, B image rather than just single channel black and white
     one = np.ones(img.shape)
-    img = cv2.merge((img, img, one)) # causes red to fill in peak areas
+    img = np.stack((one, img, img), axis=-1) # causes red to fill in peak areas
 
     # convert to bytes 0..1 -> 0..255
     img = np.uint8(img * 255)
