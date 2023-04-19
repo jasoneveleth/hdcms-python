@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 class ImageConfig:
     """this class is used to keep track of all the parameters of the image
     """
-    def __init__(self, size=(3600, 1200), std_scale=1, desingularization=1e-5, axis_thickness=3):
+    def __init__(self, size=(3600, 1200), std_scale=1, desingularization=1e-5, axis_thickness=3, xlabel="m/z values", ylabel="intensities", title="hdc visualization"):
         self.xpixels, self.ypixels = size
 
         # how much to scale the stddev
@@ -17,6 +17,10 @@ class ImageConfig:
 
         # thickness of axes
         self.axis_thickness = axis_thickness
+
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.title = title
 
 class StatsContext:
     """this class is used by 1d code to keep track of the bin parameters
@@ -152,9 +156,9 @@ def dress_image(img, axis_limits, config):
     fig, ax = plt.subplots(dpi=(1/APPROX_MARGIN_RATIO_OF_IMG)*ylen/figsize)
     ax.imshow(img, extent=(xmin, xmax, ymin, ymax))
     ax.set_aspect(((xmax-xmin)/(ymax-ymin))/(xlen/ylen))
-    ax.set_title("hdc visual")
-    ax.set_xlabel("m/z values")
-    ax.set_ylabel("intensities")
+    ax.set_title(config.title)
+    ax.set_xlabel(config.xlabel)
+    ax.set_ylabel(config.ylabel)
 
     fig.canvas.draw()
     img = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
