@@ -161,7 +161,11 @@ def dress_image(img, axis_limits, config):
     ax.set_ylabel(config.ylabel)
 
     fig.canvas.draw()
-    img = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+    buf = fig.canvas.tostring_rgb()
+    ncols, nrows = fig.canvas.get_width_height()
+    img = np.frombuffer(buf, dtype=np.uint8)
+    # note: the nrows and ncols order
+    img = img.reshape(nrows, ncols, 3)
 
     # reactivate old figure
     plt.figure(old_figure_num)
