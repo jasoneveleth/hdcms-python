@@ -3,6 +3,7 @@
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
+from PIL import Image
 
 class ImageConfig:
     """this class is used to keep track of all the parameters of the image
@@ -132,7 +133,8 @@ def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=
                 h, k, width, sd = coordinate_rectangle_to_pixels((rect_center_x, peak[0], context.bin_width, peak[1]), axis_limits, config)
                 img += gaussian_1d(h, k, sd, width, config)
 
-    return dress_image(img, axis_limits, config)
+    img = dress_image(img, axis_limits, config)
+    return Image.fromarray(img)
 
 def dress_image(img, axis_limits, config):
     """this function takes the straight output of the gaussians and adds axes, tickmarks, text

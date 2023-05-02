@@ -25,12 +25,10 @@ For more documentation: see [`examples/` directory](https://github.com/jasonevel
 
 `matplotlib` and scipy are needed for `generate_example()`, which will generate a random synthetic data set. 
 
-opencv is required for `write_image()`, which will visualize summary statistics. 
-
-
 ## Change Log
 
 ```
+0.1.19 Return image from write_image
 0.1.18 Add labels to visualization configuration options
 0.1.17 Use matplotlib axes rather than my own
 0.1.16 Bug fixes (text for x axis, names for regex2filenames)
