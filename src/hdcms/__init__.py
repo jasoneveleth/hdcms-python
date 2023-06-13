@@ -5,4 +5,4 @@ from .stats import filenames2stats1d, filenames2stats2d
 from .stats import compare
 from .visualize import write_image
 from .gen import generate_examples
-from .verify import ms_valid_data_format
+from .verify import is_valid_ms_data_format

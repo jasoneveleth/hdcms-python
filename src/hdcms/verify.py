@@ -10,7 +10,7 @@ def assert_all_floats(l):
         if not isfloat(ele):
             raise RuntimeError(f"found: nonfloat {ele}")
 
-def ms_valid_data_format(path_name):
+def is_valid_ms_data_format(path_name):
     with open(path_name) as f:
         line_iter = iter(f.readlines())
 
