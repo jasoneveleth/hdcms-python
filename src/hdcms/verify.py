@@ -1,3 +1,5 @@
+import re
+
 def isfloat(num):
     try:
         float(num)
@@ -24,15 +26,14 @@ def is_valid_ms_data_format(path_name):
         if not line:
             raise RuntimeError(f"empty file")
 
-        fields = line.split(' \t,')
+        fields = re.split('[ \t,]+', line)
         assert_all_floats(fields)
         if len(fields) != 2:
             raise RuntimeError("got too many values per line")
 
         for line in line_iter:
-            fields = line.split(' \t,')
+            fields = re.split('[ \t,]+', line)
             assert_all_floats(fields)
             if len(fields) != 2:
                 raise RuntimeError("got too many values per line")
-
 
