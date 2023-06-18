@@ -9,18 +9,18 @@ def file_ok(fname):
     if not (os.path.isfile(fname) and os.access(fname, os.R_OK)):
         raise RuntimeError(f"File {fname} doesn't exist or isn't readable")
 
-def filenames2stats1d(filenames):
+def filenames2stats1d(filenames, start, end, num_bins, scaling):
     """take filenames and convert them into a 1d summary statistic"""
     for f in filenames.split(","):
         file_ok(f)
-    return hdcms_bindings.filenames_to_stats_1d(filenames)
+    return hdcms_bindings.filenames_to_stats_1d(filenames, start=start, end=end, num_bins=num_bins, scaling=scaling)
 
-def filenames2stats2d(filenames):
+def filenames2stats2d(filenames, scaling):
     """take filenames and convert them into a 2d summary statistic"""
     for f in filenames.split(","):
         if not (os.path.isfile(f) and os.access(f, os.R_OK)):
             raise RuntimeError(f"File {f} doesn't exist or isn't readable")
-    return hdcms_bindings.filenames_to_stats_2d(filenames)
+    return hdcms_bindings.filenames_to_stats_2d(filenames, scaling=scaling)
 
 def regex2filenames(regex, dir="."):
     """takes regex, finds all files that match and convert them into list of filenames"""
@@ -39,25 +39,25 @@ def regex2filenames(regex, dir="."):
     full_paths = list(map(lambda f: os.path.join(dir, f), matches))
     return ','.join(full_paths)
 
-def regex2stats1d(regex, dir="."):
+def regex2stats1d(regex, dir=".", start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
     """takes regex, converts list of filenames that match into 1d summary stat"""
     filenames = regex2filenames(regex, dir)
-    return filenames2stats1d(filenames)
+    return filenames2stats1d(filenames, start, end, num_bins, scaling)
 
-def regex2stats2d(regex, dir="."):
+def regex2stats2d(regex, dir=".", scaling='m'):
     """takes regex, converts list of filenames that match into 2d summary stat
-       example: regex2stats1d(r"CM1_2_\\d.txt", dir="../data")"""
+       example: regex2stats2d(r"CM1_2_\\d.txt", dir="../data")"""
     filenames = regex2filenames(regex, dir)
-    return filenames2stats2d(filenames)
+    return filenames2stats2d(filenames, scaling)
 
 def file2filenames(filename):
     """takes file with filenames on separate lines and joins them into a string of filenames separated by commas"""
     with open(filename) as f:
         return ",".join(f.readlines())
 
-def file2stats1d(filename):
+def file2stats1d(filename, start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
     """takes file with filenames on separate lines converts them into a 1d summary statistic"""
-    return filenames2stats1d(file2filenames(filename))
+    return filenames2stats1d(file2filenames(filename), start, end, num_bins, scaling)
 
 def file2stats2d(filename):
     """takes file with filenames on separate lines converts them into a 2d summary statistic
@@ -72,7 +72,7 @@ def get_unique_tmpdir(name="hdcms-numpy-tmp"):
         name += "0"
     return os.path.join(dir, name)
 
-def array2stats1d(*args):
+def array2stats1d(*args, start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
     """takes a varargs list of numpy arrays and converts them into 1d summary statistic"""
     dir = get_unique_tmpdir()
     lst = []
@@ -80,7 +80,7 @@ def array2stats1d(*args):
         filename = os.path.join(dir, f"{i}-numpy-array.txt")
         np.savetxt(filename, arr)
         lst.append(filename)
-    return filenames2stats1d(",".join(lst))
+    return filenames2stats1d(",".join(lst), start, end, num_bins, scaling)
 
 def array2stats2d(*args):
     """takes a varargs list of numpy arrays and converts them into 2d summary statistic"""
