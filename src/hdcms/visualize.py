@@ -127,9 +127,9 @@ def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContex
         if len(peak) == 4:
             h, k, a, b = coordinate_rectangle_to_pixels(peak, axis_limits, config)
             red, green, blue = color
-            img -= (1-red) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
-            img -= (1-green) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
-            img -= (1-blue) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            img[:, :, 0] -= (1-red) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            img[:, :, 1] -= (1-green) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            img[:, :, 2] -= (1-blue) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
         else:
             if np.sum(peak[0]) != 0.:
                 rect_center_x = context.start + i*context.bin_width + context.bin_width/2
