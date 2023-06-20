@@ -94,7 +94,7 @@ def coordinate_rectangle_to_pixels(rect, axis_limits, config):
     y = (y - ymin)*yscale # we don't add anything bc min pixel value is 0
     return (x, config.ypixels - y, width * xscale, height * yscale)
 
-def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=None):
+def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContext(), axis_limits=None):
     data = np.array(data)
     if len(data[0]) == 4:
         data[:,2] = data[:,2] * config.std_scale + config.desingularization
@@ -121,17 +121,23 @@ def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=
     if len(data[0]) == 4:
         assert(np.min(data[:, 1]) >= 0 and np.min(data[:,0]) >= 0)
 
-    img = np.zeros((config.ypixels, config.xpixels))
+    img = np.ones((config.ypixels, config.xpixels, 3))
 
     for i, peak in enumerate(data):
         if len(peak) == 4:
             h, k, a, b = coordinate_rectangle_to_pixels(peak, axis_limits, config)
-            img += gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            red, green, blue = color
+            img[:, :, 0] -= (1-red) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            img[:, :, 1] -= (1-green) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
+            img[:, :, 2] -= (1-blue) * gaussian_2d(config.xpixels, config.ypixels, h, k, a, b)
         else:
             if np.sum(peak[0]) != 0.:
                 rect_center_x = context.start + i*context.bin_width + context.bin_width/2
                 h, k, width, sd = coordinate_rectangle_to_pixels((rect_center_x, peak[0], context.bin_width, peak[1]), axis_limits, config)
-                img += gaussian_1d(h, k, sd, width, config)
+                red, green, blue = color
+                img[:, :, 0] -= (1-red) * gaussian_1d(h, k, sd, width, config)
+                img[:, :, 1] -= (1-green) * gaussian_1d(h, k, sd, width, config)
+                img[:, :, 2] -= (1-blue) * gaussian_1d(h, k, sd, width, config)
 
     img = dress_image(img, axis_limits, config)
     return Image.fromarray(img)
@@ -139,13 +145,6 @@ def write_image(data, config=ImageConfig(), context=StatsContext(), axis_limits=
 def dress_image(img, axis_limits, config):
     """this function takes the straight output of the gaussians and adds axes, tickmarks, text
     """
-    # invert -> most of image is ~1, and peaks are ~0
-    img = np.clip(1 - img, 0, 1)
-
-    # convert to R, G, B image rather than just single channel black and white
-    one = np.ones(img.shape)
-    img = np.stack((one, img, img), axis=-1) # causes red to fill in peak areas
-
     # convert to bytes 0..1 -> 0..255
     img = np.uint8(img * 255)
 
