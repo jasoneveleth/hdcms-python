@@ -39,7 +39,7 @@ def regex2filenames(regex, dir="."):
     full_paths = list(map(lambda f: os.path.join(dir, f), matches))
     return ','.join(full_paths)
 
-def regex2stats1d(regex, dir=".", start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
+def regex2stats1d(regex, dir=".", start=0, end=900, num_bins=9000, scaling='m'):
     """takes regex, converts list of filenames that match into 1d summary stat"""
     filenames = regex2filenames(regex, dir)
     return filenames2stats1d(filenames, start, end, num_bins, scaling)
@@ -55,7 +55,7 @@ def file2filenames(filename):
     with open(filename) as f:
         return ",".join(f.readlines())
 
-def file2stats1d(filename, start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
+def file2stats1d(filename, start=0, end=900, num_bins=9000, scaling='m'):
     """takes file with filenames on separate lines converts them into a 1d summary statistic"""
     return filenames2stats1d(file2filenames(filename), start, end, num_bins, scaling)
 
@@ -72,7 +72,7 @@ def get_unique_tmpdir(name="hdcms-numpy-tmp"):
         name += "0"
     return os.path.join(dir, name)
 
-def array2stats1d(*args, start=0, end=899.90000000000009094947, num_bins=9000, scaling='m'):
+def array2stats1d(*args, start=0, end=900, num_bins=9000, scaling='m'):
     """takes a varargs list of numpy arrays and converts them into 1d summary statistic"""
     dir = get_unique_tmpdir()
     lst = []
