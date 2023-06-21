@@ -94,7 +94,7 @@ def coordinate_rectangle_to_pixels(rect, axis_limits, config):
     y = (y - ymin)*yscale # we don't add anything bc min pixel value is 0
     return (x, config.ypixels - y, width * xscale, height * yscale)
 
-def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContext(), axis_limits=None):
+def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContext(), axis_limits=None, npeaks=0):
     data = np.array(data)
     if len(data[0]) == 4:
         data[:,2] = data[:,2] * config.std_scale + config.desingularization
@@ -122,6 +122,10 @@ def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContex
         assert(np.min(data[:, 1]) >= 0 and np.min(data[:,0]) >= 0)
 
     img = np.ones((config.ypixels, config.xpixels, 3))
+
+    if npeaks >= 0:
+        ind = np.argpartition(data[:, 0], -npeaks)[-npeaks:]
+        data = data[ind]
 
     for i, peak in enumerate(data):
         if len(peak) == 4:
