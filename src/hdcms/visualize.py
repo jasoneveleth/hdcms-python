@@ -3,6 +3,7 @@
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
+import matplotlib
 from PIL import Image
 
 class ImageConfig:
@@ -168,7 +169,11 @@ def dress_image(img, axis_limits, config):
     fig.canvas.draw()
     buf = fig.canvas.tostring_rgb()
     ncols, nrows = fig.canvas.get_width_height()
-    img = np.frombuffer(buf, dtype=np.uint8)
+    if matplotlib.rcParams["backend"] == 'MacOSX':
+        print("macos bug fixed!")
+        img = np.frombuffer(buf, dtype=np.float32).astype(np.uint8)
+    else:
+        img = np.frombuffer(buf, dtype=np.uint8)
     # note: the nrows and ncols order
     img = img.reshape(nrows, ncols, 3)
 
