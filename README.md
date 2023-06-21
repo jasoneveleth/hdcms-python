@@ -15,11 +15,11 @@ print(hdc.compare(gaussian_sum_stat, laplacian_sum_stat))
 hdc.write_image(gaussian_sum_stat, "tmp.png")
 ```
 
-This library is built on top of the [`hdcms-bindings` package](https://pypi.org/project/hdcms-bindings/), which exposes python bindings to a C library. That bindings package contains only a few functions and lacks a nice user experience. But, if you are only interested in that, check it out.
-
 For more documentation: see [`examples/` directory](https://github.com/jasoneveleth/hdcms-python/tree/main/examples).
 
 ## Dependencies
+
+This library is built on top of the [`hdcms-bindings` package](https://pypi.org/project/hdcms-bindings/), which exposes python bindings to a C library. 
 
 `numpy` is a necessary dependency for every function. 
 
@@ -28,6 +28,7 @@ For more documentation: see [`examples/` directory](https://github.com/jasonevel
 ## Change Log
 
 ```
+0.1.23 Add xtol
 0.1.22 Fix new colors for write_image
 0.1.21 New colors for write_image
 0.1.20 Change name from ms_valid_data_format to is_valid_ms_data_format + scaling, start, end, num_bins
