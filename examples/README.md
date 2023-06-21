@@ -27,6 +27,8 @@ Here is the notebook which explains example 1: `paper_example1.ipynb`.
 
 ### Data
 
+CM1, CM2, CM3, were from https://data.nist.gov/od/id/mds2-2418/pdr:v/1.0.1.
+
 <details>
 <summary>
 Names and formulas for all compounds in `data/`
@@ -176,6 +178,15 @@ Isomers,12,LSD,C20H25N3O,
 Isomers,13,Methamphetamine,C10H15N,
 Isomers,14,delta-9-THC,C21H30O2,
 Isomers,15,o-FBF,C23H29FN2O,
+
+DART-MS:
+1. Cotinine and 2. Serotonin
+3. Phenibut and 4. MDA
+5. MMDPPA and 6. Methylone
+7. 5-methoxy MET and 8. Norfentanyl
+9. Cocaine and 10. Scopolamine
+11. HU-210 and 12. Testosterone Isocaprionate
+13. Methamphetamine and 14. Phentermine. 
 </code>
 </details>
 
