@@ -28,6 +28,7 @@ This library is built on top of the [`hdcms-bindings` package](https://pypi.org/
 ## Change Log
 
 ```
+0.1.24 Add npeaks for visualization
 0.1.23 Add xtol
 0.1.22 Fix new colors for write_image
 0.1.21 New colors for write_image
