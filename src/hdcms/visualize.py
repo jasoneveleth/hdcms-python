@@ -124,7 +124,7 @@ def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContex
 
     img = np.ones((config.ypixels, config.xpixels, 3))
 
-    if npeaks >= 0:
+    if npeaks >= 0 and len(data[0]) == 4:
         ind = np.argpartition(data[:, 1], -npeaks)[-npeaks:]
         data = data[ind]
 
