@@ -9,13 +9,13 @@ def file_ok(fname):
     if not (os.path.isfile(fname) and os.access(fname, os.R_OK)):
         raise RuntimeError(f"File {fname} doesn't exist or isn't readable")
 
-def filenames2stats1d(filenames, start, end, num_bins, scaling):
+def filenames2stats1d(filenames, start=0, end=900, num_bins=9000, scaling='n'):
     """take filenames and convert them into a 1d summary statistic"""
     for f in filenames.split(","):
         file_ok(f)
     return hdcms_bindings.filenames_to_stats_1d(filenames, start=start, end=end, num_bins=num_bins, scaling=scaling)
 
-def filenames2stats2d(filenames, scaling, xtol):
+def filenames2stats2d(filenames, scaling='n', xtol=float('inf')):
     """take filenames and convert them into a 2d summary statistic"""
     for f in filenames.split(","):
         if not (os.path.isfile(f) and os.access(f, os.R_OK)):
