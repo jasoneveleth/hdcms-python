@@ -125,7 +125,7 @@ def write_image(data, color=(1, 0, 0), config=ImageConfig(), context=StatsContex
     img = np.ones((config.ypixels, config.xpixels, 3))
 
     if npeaks >= 0:
-        ind = np.argpartition(data[:, 0], -npeaks)[-npeaks:]
+        ind = np.argpartition(data[:, 1], -npeaks)[-npeaks:]
         data = data[ind]
 
     for i, peak in enumerate(data):
@@ -170,7 +170,6 @@ def dress_image(img, axis_limits, config):
     buf = fig.canvas.tostring_rgb()
     ncols, nrows = fig.canvas.get_width_height()
     if matplotlib.rcParams["backend"] == 'MacOSX':
-        print("macos bug fixed!")
         img = np.frombuffer(buf, dtype=np.int32).astype(np.uint8)
     else:
         img = np.frombuffer(buf, dtype=np.uint8)
