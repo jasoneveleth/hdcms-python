@@ -28,6 +28,7 @@ This library is built on top of the [`hdcms-bindings` package](https://pypi.org/
 ## Change Log
 
 ```
+0.1.26 Bug fix: npeaks for y-hdc for visualization was possible
 0.1.25 Added missing optional args for filenames2stats*
 0.1.24 Add npeaks for visualization
 0.1.23 Add xtol
