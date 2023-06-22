@@ -171,7 +171,7 @@ def dress_image(img, axis_limits, config):
     ncols, nrows = fig.canvas.get_width_height()
     if matplotlib.rcParams["backend"] == 'MacOSX':
         print("macos bug fixed!")
-        img = np.frombuffer(buf, dtype=np.float32).astype(np.uint8)
+        img = np.frombuffer(buf, dtype=np.int32).astype(np.uint8)
     else:
         img = np.frombuffer(buf, dtype=np.uint8)
     # note: the nrows and ncols order
