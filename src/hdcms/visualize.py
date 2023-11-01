@@ -41,6 +41,7 @@ def gaussian_2d(width, height, h, k, a, b):
     (h,k) are the center of the gaussian
     (a, b) are the standard deviations of the gaussian
     """
+    h, k = round(h), round(k)
     # Generate (x,y) coordinate arrays
     y,x = np.mgrid[-k:height-k,-h:width-h] 
     # returns an array [[[-k, -k+1, ..., height-k-1, height-k], ...], 
