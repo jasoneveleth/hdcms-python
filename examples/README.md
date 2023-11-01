@@ -2,17 +2,21 @@
 
 ## start_here.ipynb
 
-describes workflow + data format
+Describes workflow + data format
 
 ## paper_visualization.ipynb
 
-contains miscellaneous visualization from the paper.
+Contains miscellaneous visualization from the paper.
 
-### Data
+#### Data
 
 `data/ex{i}.txt` - synthetic data for basic visualization
 
 ## paper_example_1.ipynb
+
+Very simple use of the package.
+
+## paper_example_2.ipynb
 
 Source: https://data.nist.gov/od/id/mds2-2418
 Note: we used the following bash script to preprocess the data in CM1, CM2, CM3, and Isomers.
@@ -189,7 +193,3 @@ DART-MS:
 13. Methamphetamine and 14. Phentermine. 
 </code>
 </details>
-
-## paper_example_2.ipynb
-
-TODO: describe this
